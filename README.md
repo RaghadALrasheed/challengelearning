@@ -125,7 +125,7 @@ challengelearning
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/<your-username>/<repo-name>.git
+git clone https://github.com/RaghadALrasheed/challengelearning.git
    ```
 2. Open `challengelearning.xcodeproj` in **Xcode 26** or later.
 3. Choose an iPhone simulator and press **⌘ R**.
