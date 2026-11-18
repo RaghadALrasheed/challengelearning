@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="360" viewBox="0 0 1280 360" role="img"><style>
+  text { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Helvetica, Arial, sans-serif; }
+  .flick { transform-box: fill-box; transform-origin: 50% 100%; animation: flick 1.6s ease-in-out infinite; }
+  @keyframes flick { 0%,100% { transform: scale(1,1) skewX(0deg); } 25% { transform: scale(.96,1.05) skewX(-2deg); }
+    50% { transform: scale(1.03,.97) skewX(1.5deg); } 75% { transform: scale(.98,1.03) skewX(-1deg); } }
+  .e { animation-name: rise; animation-timing-function: linear; animation-iteration-count: infinite; }
+  .e2 { animation-name: rise2; } .e3 { animation-name: rise3; }
+  @keyframes rise { 0% { transform: translate(0,0); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate(30px,-560px); opacity: 0; } }
+  @keyframes rise2 { 0% { transform: translate(0,0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translate(-40px,-520px); opacity: 0; } }
+  @keyframes rise3 { 0% { transform: translate(0,0); opacity: 0; } 10% { opacity: .8; } 100% { transform: translate(10px,-600px); opacity: 0; } }
+  .spin { transform-box: fill-box; transform-origin: center; animation: spin 24s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .breathe { transform-box: fill-box; transform-origin: center; animation: breathe 5s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { transform: scale(1); opacity: .8; } 50% { transform: scale(1.08); opacity: 1; } }
+
+  .path { stroke-dasharray: 820; animation: path 9s ease-in-out infinite; }
+  @keyframes path { 0%,5% { stroke-dashoffset: 820; } 70%,92% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 820; } }
+  .caret { animation: caret 1s steps(1) infinite; } @keyframes caret { 50% { opacity: 0; } }
+  .typing { stroke-dasharray: 80; animation: type 4s steps(5) infinite; }
+  .p0,.p1,.p2 { animation: 9s infinite; }
+  .p0 { animation-name: p0; } .p1 { animation-name: p1; } .p2 { animation-name: p2; }
+  @keyframes p0 { 0%,33% { fill: #FF9230; } 34%,100% { fill: #2c2c2e; } }
+  @keyframes p1 { 0%,33% { fill: #2c2c2e; } 34%,66% { fill: #FF9230; } 67%,100% { fill: #2c2c2e; } }
+  @keyframes p2 { 0%,66% { fill: #2c2c2e; } 67%,100% { fill: #FF9230; } }
+  .node { transform-box: fill-box; transform-origin: center; }
+  .n0 { animation: n0 9s infinite; } .n1 { animation: n1 9s infinite; } .n2 { animation: n2 9s infinite; }
+  @keyframes n0 { 0%,100% { stroke: #FF9230; } }
+  @keyframes n1 { 0%,36% { stroke: #2c2c2e; } 40%,92% { stroke: #FF9230; } 100% { stroke: #2c2c2e; } }
+  @keyframes n2 { 0%,66% { stroke: #2c2c2e; } 70%,92% { stroke: #FF9230; } 100% { stroke: #2c2c2e; } }
+</style><defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFB35C"/><stop offset="1" stop-color="#FF9230"/></linearGradient>
+    <linearGradient id="txt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#FFE2C2"/><stop offset="1" stop-color="#FF9230"/></linearGradient>
+    <radialGradient id="glowO"><stop offset="0" stop-color="#FF9230" stop-opacity=".55"/><stop offset="1" stop-color="#FF9230" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glowC"><stop offset="0" stop-color="#3CD3FE" stop-opacity=".45"/><stop offset="1" stop-color="#3CD3FE" stop-opacity="0"/></radialGradient><clipPath id="card"><rect width="1280" height="360" rx="28"/></clipPath><linearGradient id="trailG2" x1="0" x2="1"><stop offset="0" stop-color="#FF9230"/><stop offset=".7" stop-color="#FFB35C"/><stop offset="1" stop-color="#3CD3FE"/></linearGradient></defs><g clip-path="url(#card)"><rect width="1280" height="360" rx="28" fill="#050505"/>
+  <ellipse cx="640" cy="140" rx="560" ry="140" fill="url(#glowO)" opacity=".25"/>
+  <path d="M230 140 C 380 60, 490 220, 640 140 S 900 60, 1050 140" fill="none" stroke="#1f1f22" stroke-width="3" stroke-dasharray="4 8"/>
+  <path class="path" d="M230 140 C 380 60, 490 220, 640 140 S 900 60, 1050 140" fill="none" stroke="url(#trailG2)" stroke-width="4" stroke-linecap="round"/>
+  <circle class="n0" cx="230" cy="140" r="74" fill="#0d0d0f" stroke-width="2.5"/>
+  <text x="196" y="150" font-size="28" font-weight="500" fill="#8e8e93">Swift</text>
+  <rect class="caret" x="260" y="124" width="2.5" height="30" fill="#FF9230"/>
+  <line x1="190" y1="164" x2="274" y2="164" stroke="#3a3a3c"/>
+  <circle class="n1" cx="640" cy="140" r="74" fill="#0d0d0f" stroke-width="2.5"/>
+  <rect class="p0" x="582" y="94" width="116" height="26" rx="13"/><text x="640" y="112" text-anchor="middle" font-size="15" font-weight="600" fill="#fff">Week</text>
+  <rect class="p1" x="582" y="127" width="116" height="26" rx="13"/><text x="640" y="145" text-anchor="middle" font-size="15" font-weight="600" fill="#fff">Month</text>
+  <rect class="p2" x="582" y="160" width="116" height="26" rx="13"/><text x="640" y="178" text-anchor="middle" font-size="15" font-weight="600" fill="#fff">Year</text>
+  <circle class="n2" cx="1050" cy="140" r="74" fill="#0d0d0f" stroke-width="2.5"/>
+  <g transform="translate(1015.0 101.0) scale(0.7000)"><g class="flick"><path d="M50 2 C56 22 82 36 82 64 C82 86 67 100 50 100 C33 100 18 87 18 66 C18 52 26 43 33 35 C34 46 39 53 46 53 C41 37 43 18 50 2Z" fill="url(#fl)"/><path d="M50 58 C55 66 63 72 63 82 C63 91 57 97 50 97 C43 97 37 91 37 84 C37 76 45 70 50 58Z" fill="#000" opacity=".85"/></g></g>
+  <text x="230" y="272" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="3" fill="#FF9230">STEP 01</text><text x="640" y="272" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="3" fill="#FF9230">STEP 02</text><text x="1050" y="272" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="3" fill="#FF9230">STEP 03</text>
+  <text x="230" y="302" text-anchor="middle" font-size="23" font-weight="700" fill="#fff">Choose a skill</text>
+  <text x="640" y="302" text-anchor="middle" font-size="23" font-weight="700" fill="#fff">Set your pace</text>
+  <text x="1050" y="302" text-anchor="middle" font-size="23" font-weight="700" fill="#fff">Show up daily</text>
+  <text x="230" y="330" text-anchor="middle" font-size="16" fill="#8e8e93">Swift, Arabic, piano — anything.</text>
+  <text x="640" y="330" text-anchor="middle" font-size="16" fill="#8e8e93">A week, a month, or a whole year.</text>
+  <text x="1050" y="330" text-anchor="middle" font-size="16" fill="#8e8e93">Log it, or freeze it. Never lose the fire.</text>
+</g></svg>
