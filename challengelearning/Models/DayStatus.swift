@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DayStatus {
+enum DayStatus: Codable {
     case notlearned
     case learned
     case freezed

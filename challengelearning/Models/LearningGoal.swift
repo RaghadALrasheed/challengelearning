@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct LearningGoal{
+struct LearningGoal: Codable {
     var goal: String
     var duration: LearningDuration
     var startDate: Date

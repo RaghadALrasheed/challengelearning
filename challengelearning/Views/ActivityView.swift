@@ -2,117 +2,175 @@
 //  ActivityView.swift
 //  challengelearning
 //
-//  Created by Raghad Alrasheed on 04/06/1448 AH.
-//
 
 import SwiftUI
 
 struct ActivityView: View {
+    var appViewModel: AppViewModel
     @State private var viewModel = ActivityViewModel()
-    private var weekDays: [Date]{
-        let calendar = Calendar.current
-        guard let start = calendar.dateInterval(of: .weekOfYear, for: Date())?.start else { return [] }
-        return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
-    }
-   
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 20){
-            
+        VStack(alignment: .leading, spacing: 16) {
+            header
+            weekStrip
+            statCards
+
+            if appViewModel.isGoalFinished || appViewModel.isStreakBroken, let goal = appViewModel.goal {
+                Spacer()
+                GoalResultView(appViewModel: appViewModel, goal: goal, logs: appViewModel.goalLogs())
+                Spacer()
+            } else {
+                Spacer()
+                learnedButton
+                Spacer()
+                freezeButton
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .padding(.horizontal)
+        .onAppear {
+            viewModel.startDate = appViewModel.goal?.startDate ?? .distantPast
+            viewModel.duration = appViewModel.goal?.duration ?? .week
+        }
+        .onChange(of: appViewModel.goal?.startDate) { _, newDate in
+            viewModel.startDate = newDate ?? .distantPast
+            viewModel.duration = appViewModel.goal?.duration ?? .week
+        }
+    }
+
+    // MARK: - Header
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("Activity")
                     .font(.largeTitle)
                     .bold()
                 Spacer()
-                Image(systemName: "calendar")
-                    .foregroundStyle(.primary)
-                    .frame(width: 40, height: 40)
-                    .background(Color.gray.opacity(0.2), in: Circle())
-                Image(systemName: "pencil.and.outline")
-                    .foregroundStyle(.primary)
-                    .frame(width: 40, height: 40)
-                    .background(Color.gray.opacity(0.2), in: Circle())
+                NavigationLink {
+                    CalendarView()
+                } label: {
+                    circleIcon("calendar")
+                }
+                .buttonStyle(.plain)
+
+                NavigationLink {
+                    LearningGoalView(appViewModel: appViewModel)
+                } label: {
+                    circleIcon("pencil.and.outline")
+                }
+                .buttonStyle(.plain)
             }
+
             Text(Date().formatted(.dateTime.weekday(.wide).day().month(.wide)))
+                .font(.body)
                 .foregroundStyle(.secondary)
-            HStack {
-                ForEach(weekDays, id: \.self) { date in
-                    VStack(spacing: 8) {
-                        Text(date.formatted(.dateTime.weekday(.narrow)))
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundStyle(.primary)
-                        Text(date.formatted(.dateTime.day()))
-                            .frame(width: 36, height: 36)
-                            .background(
-                                viewModel.status(for: date) == .learned ? Color.orange.opacity(0.3) :
-                                viewModel.status(for: date) == .freezed ? Color.cyan.opacity(0.3) :
-                                Calendar.current.isDateInToday(date) ? Color.orange : Color.clear,
-                                in: Circle()
-                            )                   }
-                    .frame(maxWidth: .infinity)
-                }
-            }
-            HStack {
-                VStack {
-                    Image(systemName: "flame.fill")
-                        .foregroundStyle(.orange)
-                    Text("\(viewModel.learnedCount) \(viewModel.learnedCount == 1 ? "day" : "days")")
+        }
+        .padding(.top, 24)
+    }
+
+    // MARK: - Week Strip
+
+    private var weekStrip: some View {
+        HStack {
+            ForEach(viewModel.weekDays, id: \.self) { date in
+                let status = viewModel.status(for: date)
+
+                VStack(spacing: 8) {
+                    Text(date.formatted(.dateTime.weekday(.narrow)))
+                        .font(.subheadline)
                         .bold()
-                    Text("Learned")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
+                    Text(date.formatted(.dateTime.day()))
+                        .font(.title3)
+                        .frame(width: 40, height: 40)
+                        .background(
+                            status == .learned ? Color.orange.opacity(0.3) :
+                            status == .freezed ? Color.cyan.opacity(0.3) :
+                            Calendar.current.isDateInToday(date) ? Color.orange : Color.clear,
+                            in: Circle()
+                        )
                 }
                 .frame(maxWidth: .infinity)
-                .padding()
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 20))
-                
-                VStack {
-                    Image(systemName: "snowflake")
-                        .foregroundStyle(.cyan)
-                    Text("\(viewModel.freezedCount) \(viewModel.freezedCount == 1 ? "day" : "days")")
-                        .bold()
-                    Text("Freezed")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 20))
             }
-            Spacer()
-            
-            Button {
-                viewModel.toggleLearned()
-            }label: {
-                Text(viewModel.todayStatus == .learned ? "Logged as Learned" : "Log as Learned")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(width: 240, height: 240)
-                    .background(viewModel.todayStatus == .learned ? Color.gray.opacity(0.2) : Color.orange, in: Circle())
-            }
-            .frame(maxWidth: .infinity)
-            
-            Spacer()
-            Button {
-                viewModel.toggleFreeze()
-            }label: {
-                Text(viewModel.todayStatus == .freezed ? "Freezed for a day" : "Freeze for a day")
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .glassEffect(.regular.tint(viewModel.todayStatus == .freezed ? .gray.opacity(0.3) : .cyan), in: Capsule())
-                }
-            .disabled(viewModel.todayStatus != .freezed && viewModel.freezedCount >= viewModel.maxFreezes)
-            Text("\(viewModel.freezedCount) out of \(viewModel.maxFreezes) Freezes used")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .padding()
         }
     }
-#Preview {
-    ActivityView()
+
+    // MARK: - Stat Cards
+
+    private var statCards: some View {
+        HStack(spacing: 12) {
+            statCard(icon: "flame.fill", color: .orange, count: viewModel.learnedCount, label: "Learned")
+            statCard(icon: "snowflake", color: .cyan, count: viewModel.freezedCount, label: "Freezed")
+        }
+    }
+
+    private func statCard(icon: String, color: Color, count: Int, label: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundStyle(color)
+            Text("\(count) \(count == 1 ? "day" : "days")")
+                .font(.headline)
+            Text(label)
+                .font(.footnote)
+                .foregroundStyle(.primary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .glassEffect(.regular.tint(.black.opacity(0.6)), in: RoundedRectangle(cornerRadius: 28))
+    }
+
+    // MARK: - Buttons
+
+    private var learnedButton: some View {
+        Button {
+            viewModel.toggleLearned()
+        } label: {
+            Text(viewModel.todayStatus == .learned ? "Logged as Learned" : "Log as Learned")
+                .font(.title3)
+                .bold()
+                .foregroundStyle(.white)
+                .frame(width: 280, height: 280)
+                .glassEffect(.regular.tint(viewModel.todayStatus == .learned ? .gray.opacity(0.3) : .orange), in: Circle())
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var freezeButton: some View {
+        VStack(spacing: 16) {
+            Button {
+                viewModel.toggleFreeze()
+            } label: {
+                Text(viewModel.todayStatus == .freezed ? "Freezed for a day" : "Freeze for a day")
+                    .foregroundStyle(.white)
+                    .frame(width: 280)
+                    .padding(.vertical, 12)
+                    .glassEffect(.regular.tint(viewModel.todayStatus == .freezed ? .gray.opacity(0.3) : .cyan), in: Capsule())
+            }
+            .disabled(viewModel.isFreezeDisabled)
+
+            Text("\(viewModel.freezedCount) out of \(viewModel.maxFreezes) Freezes used")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 24)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Helpers
+
+    private func circleIcon(_ name: String) -> some View {
+        Image(systemName: name)
+            .font(.title3)
+            .foregroundStyle(.primary)
+            .frame(width: 44, height: 44)
+            .glassEffect(.regular, in: Circle())
+    }
 }
 
+#Preview {
+    NavigationStack {
+        ActivityView(appViewModel: AppViewModel())
+    }
+}

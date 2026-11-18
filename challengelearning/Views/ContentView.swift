@@ -7,23 +7,20 @@
 
 import SwiftUI
 
-
 struct ContentView: View {
-    @State private var hasGoal = false
+    @State private var appViewModel = AppViewModel()
 
     var body: some View {
-        Group {
-            if hasGoal {
-                ActivityView()
-            } else {
-                OnboardingView(hasGoal: $hasGoal)
+        if appViewModel.goal != nil {
+            NavigationStack {
+                ActivityView(appViewModel: appViewModel)
             }
-        }
-        .onAppear {
-            hasGoal = UserDefaults.standard.data(forKey: "learningGoal") != nil
+        } else {
+            OnboardingView(appViewModel: appViewModel)
         }
     }
 }
+
 #Preview {
     ContentView()
 }

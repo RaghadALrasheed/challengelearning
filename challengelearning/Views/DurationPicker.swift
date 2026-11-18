@@ -1,18 +1,22 @@
-//
-//  DurationPicker.swift
-//  challengelearning
-//
-//  Created by Raghad Alrasheed on 07/06/1448 AH.
-//
-
 import SwiftUI
 
 struct DurationPicker: View {
+    @Binding var selection: LearningDuration
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            ForEach(LearningDuration.allCases, id: \.self) { item in
+                Button(item.title) {
+                    selection = item
+                }
+                .buttonStyle(.glassProminent)
+                .tint(selection == item ? .orange : .gray.opacity(0.3))
+                .font(.title3)                     // ⬅️ نفس اللي عندك
+            }
+        }
     }
 }
 
 #Preview {
-    DurationPicker()
+    DurationPicker(selection: .constant(.week))
 }
