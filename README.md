@@ -120,13 +120,12 @@ challengelearning
 - Writing **clean, reusable code** (DRY) and managing a project with **Git**.
 
 ---
-
 ## ▶️ Getting Started
-
+ 
 1. Clone the repository
-   ```bash
+```bash
 git clone https://github.com/RaghadALrasheed/challengelearning.git
-   ```
+```
 2. Open `challengelearning.xcodeproj` in **Xcode 26** or later.
 3. Choose an iPhone simulator and press **⌘ R**.
 
